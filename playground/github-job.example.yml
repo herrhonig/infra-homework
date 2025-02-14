@@ -1,0 +1,45 @@
+name: frontend-ci
+
+on:
+  push:
+    branches: [master, develop]
+
+  pull_request:
+    branches: [master, develop]
+
+jobs:
+  dependencies:
+    # environment: staging-environment -> можно задать в интерфейсе github и указать там все нужные env для stage сборки.
+    # environment: production-environment -> можно задать в интерфейсе github и указать там все нужные env для stage сборки.
+    runs-on: ubuntu-latest
+    strategy:
+    matrix:
+      shardIndex: [1, 2, 3, 4]
+      shardTotal: [4]
+    steps:
+      - name: Dependencies
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HTTP_PROXY_URL: ${{ http://proxy-url.ru }}
+        run: yarn install
+
+  test:
+    needs: [dependencies]
+    runs-on: ubuntu-latest
+    strategy:
+    # matrix позволяет распараллелить выполнение jobs
+    matrix:
+      shardIndex: [1, 2, 3, 4]
+      shardTotal: [4]
+    steps:
+      - name: Playwright tests
+        run: npm playwright test --shard=${{ matrix.shardIndex }}/${{matrix.shardTotal}}
+
+  deployment:
+    needs: [build]
+    environment: production-environment
+    strategy:
+    # matrix позволяет распараллелить выполнение jobs. Произвести проверку нескольких версий node для разных версий OS.
+    matrix:
+      node_version: ["18.x", "20.x"]
+      os: [ubuntu-latest, windows-latest, macOS-latest]
