@@ -1,0 +1,13 @@
+{
+    "test:hook": "node test/hook.js",
+    "test:eslint": "node test/eslint.js",
+    "test:github": "node test/github.js",
+    "test:gitlab": "node test/gitlab.js",
+    "test:docker": "node test/docker.js",
+    "test:kuber": "node test/kuber.js",
+    "test:cdp": "node test/cdp.js",
+    "test:prom": "node test/prom.js",
+    "test:deploy": "node test/deploy.js",
+    "test:reverse": "node test/reverse.js",
+    "test:static": "node test/static.js"
+}
