@@ -1,4 +1,5 @@
 {
+    "test:yarn": "node test/project.js",
     "test:hook": "node test/hook.js",
     "test:eslint": "node test/eslint.js",
     "test:github": "node test/github.js",

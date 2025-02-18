@@ -6,10 +6,9 @@
     "test:cjs": "node -r './build/loader.cjs' ./build/test/index.cjs",
     "test:esm": "node --import ./build/register.mjs ./build/test/index.mjs",
     "test:yaml": "node test/yaml.js",
-    "test:yarn": "node test/project.js",
     "build": "webpack --mode=development && echo 'Build completed'",
     "linters": "eslint ./src && echo 'Linters completed'",
-    "deploy": "echo deploy && echo 'Deploy completed'"
+    "deploy": "echo === deploy === \n && echo 'Deploy completed'"
   },
   "keywords": [],
   "author": "kholstinin.da@gmail.com",
@@ -32,4 +31,3 @@
     "yaml": "2.6.1"
   }
 }
-
