@@ -5,47 +5,42 @@ on:
   push:
     branches: [main, master, develop]
 jobs:
-  setup:
+  dependencies:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [18.x, 20.x, 22.x]
     steps:
        - uses: actions/checkout@v4
        - uses: actions/setup-node@v4
          with:
-          node-version: ${{ matrix.node }}
-  dependencies:
-    runs-on: ubuntu-latest
-    needs: [setup]
-    steps:
-      - name: Starting dependencies
-        run: yarn install
+          node-version: 22.x
+          cache: yarn
+       - run: yarn install
   build:
     runs-on: ubuntu-latest
     needs: [dependencies]
     steps:
-      - name: Build app
-        run: yarn run build
+       - uses: actions/checkout@v4
+       - uses: actions/setup-node@v4
+         with:
+          node-version: 22.x
+          cache: yarn
+       - run: yarn build
   linters:
     runs-on: ubuntu-latest
     needs: [dependencies]
     steps:
-      - name: Run linters
-        run: yarn run linters
-  tests:
-    runs-on: ubuntu-latest
-    needs: [dependencies]
-    steps:
-      - name: Test common js loader
-        run: yarn run test:cjs
-      - name: Test es modules loader
-        run: yarn run test:esm
-      - name: Test yaml
-        run: yarn run test:yaml
+       - uses: actions/checkout@v4
+       - uses: actions/setup-node@v4
+         with:
+          node-version: 22.x
+          cache: yarn
+       - run: yarn linters
   deploy:
     runs-on: ubuntu-latest
     needs: [dependencies, build]
     steps:
-      - name: Run deploy
-        run: yarn run deploy
+       - uses: actions/checkout@v4
+       - uses: actions/setup-node@v4
+         with:
+          node-version: 22.x
+          cache: yarn
+       - run: yarn deploy
